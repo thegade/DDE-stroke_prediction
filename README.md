@@ -1,1 +1,1 @@
-# DDE-stroke_prediction
+# Предсказание инсульта
