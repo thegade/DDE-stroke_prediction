@@ -6,6 +6,5 @@ Stroke prediction using machine learning is a hot topic in medical field and sci
 3. notebooks/*- preprocessing, visualization of data
 # Code execute
 1. data preprocessing
-2. attribute analysis
-3. split dataset
-3. ML module
+2. data visualization
+3. prediction_model
