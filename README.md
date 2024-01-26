@@ -1,2 +1,11 @@
-# Прогнозирование инсульта
-Прогнозирование инсульта с помощью машинного обучения представляет собой актуальную тему в медицинской сфере и научных исследованиях. Использование алгоритмов машинного обучения для анализа медицинских данных позволяет выявлять скрытые связи между различными факторами и риском развития инсульта. Это помогает врачам и специалистам по общественному здравоохранению выявлять людей с повышенным риском инсульта и предпринимать соответствующие меры профилактики. Такой подход способствует более точной и персонализированной медицинской помощи, а также способен снизить число случаев инсульта и связанных с ним осложнений. В этой работе мы применяем методы ML для прогнозирования  инсульта на основе базы данных состоящей из различных параметров (возраст, пол, вес и т.д), влияющих на риск возникновения инсульта у человека. Наш телеграмм бот позволяет быстро и удобно оценить может ли человек быть подвержен развитию инсульта или нет. Однако обращаться за консультацией к врачу всегда важно.
+# Stroke prediction
+Stroke prediction using machine learning is a hot topic in medical field and scientific research. Using machine learning algorithms to analyze medical data can reveal hidden connections between various factors and the risk of stroke. This helps doctors and public health professionals identify people at increased risk of stroke and take appropriate preventative measures. This approach leads to more accurate and personalized medical care, and can also reduce the incidence of stroke and related complications. In this work, we apply ML methods to predict stroke based on a database consisting of various parameters (age, gender, weight, etc.) that affect a person's risk of stroke. Our telegram bot allows you to quickly and conveniently assess whether a person may be susceptible to developing a stroke or not. However, it is always important to seek medical advice.
+# Components
+1. data/* - dataset files used
+2. models/*- files used  building, learning and testing ML module
+3. notebooks/*- preprocessing, visualization of data
+# Code execute
+1. data preprocessing
+2. attribute analysis
+3. split dataset
+3. ML module
