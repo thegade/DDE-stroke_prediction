@@ -1,7 +1,7 @@
 import re
 
 import telegram
-from telegram import ReplyKeyboardMarkup, ReplyKeyboardRemove, Bot
+from telegram import ReplyKeyboardMarkup, ReplyKeyboardRemove, Bot, bot
 from telegram.ext import Updater, CommandHandler, ConversationHandler, MessageHandler, filters, Filters
 from telegram.ext import CallbackContext, CallbackQueryHandler
 from telegram import InlineKeyboardButton, InlineKeyboardMarkup
@@ -18,7 +18,8 @@ def start(update, context):
     user = update.message.from_user
     update.message.reply_text(
         'Привет! Я помогу вам создать анкету. Давай начнем с вашего пола.',
-        reply_markup=ReplyKeyboardMarkup([['Мужской', 'Женский']], resize_keyboard=True, row_width=1, one_time_keyboard=True))
+        reply_markup=ReplyKeyboardMarkup([['Мужской', 'Женский']], resize_keyboard=True, row_width=1,
+                                         one_time_keyboard=True))
 
     return GENDER
 
@@ -59,7 +60,8 @@ def hypertension(update, context):
     user = update.message.from_user
     context.user_data['hypertension'] = update.message.text
     update.message.reply_text('Есть ли у вас сердечные заболевания? (Да/Нет)',
-                              reply_markup=ReplyKeyboardMarkup([['Да', 'Нет']], resize_keyboard=True, row_width=1, one_time_keyboard=True)
+                              reply_markup=ReplyKeyboardMarkup([['Да', 'Нет']], resize_keyboard=True, row_width=1,
+                                                               one_time_keyboard=True)
                               )
     user_id = update.message.from_user.id
     value = False
@@ -73,7 +75,8 @@ def heart_disease(update, context):
     user = update.message.from_user
     context.user_data['heart_disease'] = update.message.text
     update.message.reply_text('Вы когда-либо были в браке? (Да/Нет)',
-                              reply_markup=ReplyKeyboardMarkup([['Да', 'Нет']], resize_keyboard=True, row_width=1, one_time_keyboard=True)
+                              reply_markup=ReplyKeyboardMarkup([['Да', 'Нет']], resize_keyboard=True, row_width=1,
+                                                               one_time_keyboard=True)
                               )
     user_id = update.message.from_user.id
     value = False
@@ -97,7 +100,7 @@ def ever_married(update, context):
     # ['Ребенок', 'Государственная работа',
     #  'Не работал', 'Конфиденциально', 'Самозанятый']
     update.message.reply_text('Какой у вас тип работы?', reply_markup=ReplyKeyboardMarkup(
-        [row1, row2], row_width=1,  one_time_keyboard=True))
+        [row1, row2], row_width=1, one_time_keyboard=True))
     user_id = update.message.from_user.id
     value = False
     if update.message.text == 'Да':
@@ -112,7 +115,8 @@ def work_type(update, context):
     context.user_data['work_type'] = update.message.text
     update.message.reply_text('Какой ваш тип места жительства?',
                               reply_markup=ReplyKeyboardMarkup([['Сельский',
-                                                                 'Городской']], resize_keyboard=True, row_width=1, one_time_keyboard=True))
+                                                                 'Городской']], resize_keyboard=True, row_width=1,
+                                                               one_time_keyboard=True))
     user_id = update.message.from_user.id
     save_data(user_id, 'work_type', update.message.text)
 
@@ -122,7 +126,8 @@ def work_type(update, context):
 def residence_type(update, context):
     user = update.message.from_user
     context.user_data['residence_type'] = update.message.text
-    update.message.reply_text('Какой у вас средний уровень глюкозы в крови(мг/100мл)?')
+    update.message.reply_text(
+        'Какой у вас средний уровень глюкозы в крови? Введите либо в мг/100мл, либо ммоль/литр(стандарт)')
 
     user_id = update.message.from_user.id
     save_data(user_id, 'residence_type', update.message.text)
@@ -145,6 +150,10 @@ def avg_glucose_level(update, context):
         return AVG_GLUCOSE_LEVEL
     context.user_data['avg_glucose_level'] = update.message.text
     update.message.reply_text('Введите ваш вес(кг)')
+
+    if float(input_text) < 30:
+        input_text = float(input_text) * 18.01559
+
     user_id = update.message.from_user.id
     save_data(user_id, 'avg_glucose_level', float(input_text))
 
@@ -184,36 +193,12 @@ def height(update, context):
     update.message.reply_text('Как вы оцениваете свой статус курения?',
                               reply_markup=ReplyKeyboardMarkup(
                                   [['Раньше курил', 'Никогда не курил',
-                                    'Курю', 'Не скажу']], resize_keyboard=True,one_time_keyboard=True))
+                                    'Курю', 'Не скажу']], resize_keyboard=True, one_time_keyboard=True))
     user_id = update.message.from_user.id
     bmi = (int(context.user_data['weight']) / ((int(context.user_data['height']) / 100)
                                                * (int(context.user_data['height']) / 100)))
     save_data(user_id, 'bmi', bmi)
     return SMOKING_STATUS
-
-
-# def bmi(update, context):
-#     user = update.message.from_user
-#     input_text = update.message.text
-#
-#     pattern = re.compile(r'[+-]?(\d+(\.\d*)?|\.\d+)([eE][+-]?\d+)?')
-#
-#     input_text = input_text.replace(',', '.')
-#     if pattern.match(input_text):
-#         context.user_data['bmi'] = float(input_text)
-#     else:
-#         update.message.reply_text('Вы ввели число в неверном формате. Введите заново')
-#         return SMOKING_STATUS
-#     context.user_data['bmi'] = update.message.text
-#     update.message.reply_text('Как вы оцениваете свой статус курения?',
-#                               reply_markup=ReplyKeyboardMarkup(
-#                                   [['Раньше курил', 'Никогда не курил',
-#                                     'Курю', 'Не скажу']], one_time_keyboard=True))
-#
-#     user_id = update.message.from_user.id
-#     save_data(user_id, 'bmi', float(input_text))
-#
-#     return SMOKING_STATUS
 
 
 def smoking_status(update, context):
@@ -248,17 +233,18 @@ def smoking_status(update, context):
         f"Состоите ли в браке: {ever_married}\n"
         f"Тип работы: {user_data.work_type.value}\n"
         f"Тип места жительства: {user_data.residence_type.value}\n"
-        f"Средний уровень глюкозы: {user_data.avg_glucose_level}\n"
+        f"Средний уровень глюкозы: {user_data.avg_glucose_level} мг/100мл\n"
         f"Индекс массы тела (BMI): {user_data.bmi}\n"
         f"Статус курения: {user_data.smoking_status.value}\n"
-        f"Чтобы посмотреть риск инсульта команда /prediction"
+        f"Чтобы посмотреть риск инсульта команда /prediction\n"
+        f"Поделиться своими данными по поводу инсульта /share_data"
     )
 
     return ConversationHandler.END
 
 
 def main():
-    updater = Updater("6853612786:AAGC5TDG5_CcAfMLjvDKHVN_ARSN51rrykU")
+    updater = Updater("6853612786:AAE9YvBNGNNgRWZl1C4YlN6JTtK104y9VSg")
 
     dp = updater.dispatcher
 
@@ -286,8 +272,34 @@ def main():
 
     dp.add_handler(CommandHandler("prediction", prediction))
 
+    dp.add_handler(CommandHandler("share_data", share_data))
+
+    dp.add_handler(MessageHandler(Filters.text, get_data))
+
     updater.start_polling()
     updater.idle()
+
+
+def share_data(update, context):
+    user_id = update.message.from_user.id
+    reply_markup = ReplyKeyboardMarkup([['Да.', 'Нет.']], resize_keyboard=True,
+                                       row_width=1,
+                                       one_time_keyboard=True)
+    text = "Вы можете поделиться, был ли у вас инсульт для" \
+           "сбора дополнительных данных, которые помогут в будущем " \
+           "более точно определять риск инсульта. Данные передаются анонимно"
+    update.message.reply_text(text=text, reply_markup=reply_markup)
+
+
+def get_data(update, context):
+    user_id = update.message.from_user.id
+    user = session.query(User).filter_by(tg_id=user_id).first()
+    if update.message.text == 'Да.':
+        user.stroke = True
+    else:
+        user.stroke = False
+    session.add(user)
+    session.commit()
 
 
 def prediction(update, context):
@@ -296,7 +308,8 @@ def prediction(update, context):
     prediction_text = prediction_from_model(user)
     print(prediction_text)
     if prediction_text == 0:
-        prediction_text = "В данный момент вы не подвержены риску инсульта"
+        prediction_text = ("В данный момент вы не подвержены риску инсульта."
+                           " Если вы все же чувствуете недомогание, обратитесь к врачу")
     else:
         prediction_text = "В данный момент вы подвержены риску инсульта. Обратитесь к врачу"
     update.message.reply_text(prediction_text)

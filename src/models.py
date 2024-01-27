@@ -65,6 +65,7 @@ class User(Base):
     avg_glucose_level = Column(Float)
     bmi = Column(Float)
     smoking_status = Column(Enum(SmokingStatusEnum))
+    stroke = Column(Boolean)
 
 
 Base.metadata.create_all(engine)

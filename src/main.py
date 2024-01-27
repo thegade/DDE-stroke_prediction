@@ -3,18 +3,12 @@ import pandas as pd
 from src.models import User
 
 
-# gender, age,
-#                hypertension,
-#                heart_disease, ever_married,
-#                work_type, residence, glucose, bmi, smoking
 def prediction_from_model(user: User):
     with open('../models/prediction_model.pkl', 'rb') as f:
         data = pickle.load(f)
     print(data)
     print(user.work_type)
-    # work_type = user.work_type.lower().capitalize()
-    # residence = user.residence.lower().capitalize()
-    # smoking = user.smoking.lower().capitalize()
+
 
     if user.gender == 'MALE':
         gender = 1
@@ -50,6 +44,7 @@ def prediction_from_model(user: User):
         glucose = pickle.load(f)
         glucose_prd = glucose.transform([[user.avg_glucose_level]])[0][0]
         print(glucose_prd)
+
     with open('../models/min_max_scaler_bmi.pkl.', 'rb') as f:
         bmi = pickle.load(f)
         bmi_prd = bmi.transform([[user.bmi]])[0][0]
